@@ -1,0 +1,10 @@
+{% extends 'encuestas/base.html' %}
+
+{% block content %}
+<h2>Cargar Archivo de Encuestas</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="archivo_excel" accept=".xlsx, .xls" required>
+    <button type="submit">Procesar Archivo</button>
+</form>
+{% endblock %}

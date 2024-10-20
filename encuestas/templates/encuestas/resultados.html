@@ -1,0 +1,12 @@
+{% extends 'encuestas/base.html' %}
+
+{% block content %}
+<h2>Resultados</h2>
+<div>
+    {{ tablas|safe }}
+</div>
+<div>
+    <img src="data:image/png;base64,{{ grafico }}" alt="Gráfico">
+</div>
+<a href="{% url 'descargar_zip' %}">Descargar Resultados</a>
+{% endblock %}
