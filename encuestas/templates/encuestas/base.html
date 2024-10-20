@@ -17,6 +17,14 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Encuestas</a>
         <!-- Aquí puedes agregar enlaces y menús -->
+        <div class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <span class="navbar-text mr-3">Bienvenido, {{ user.username }}</span>
+                <a class="nav-item nav-link" href="{% url 'logout' %}?next={% url 'login' %}">Cerrar sesión</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+            {% endif %}
+        </div>
     </nav>
 
     <div class="container mt-4">

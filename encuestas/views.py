@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.views.decorators.cache import never_cache
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,6 +12,19 @@ from io import BytesIO
 import base64
 import zipfile
 
+@never_cache
+@login_required
+def inicio(request):
+    return render(request, 'encuestas/cargar_archivo.html')
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirige al nombre de la ruta 'login'
+
+
+@never_cache
 @login_required
 def cargar_archivo(request):
     if request.method == 'POST':
@@ -25,9 +41,10 @@ def cargar_archivo(request):
         imagen_png = base64.b64encode(buffer.getvalue()).decode('ascii')
         buffer.close()
         contexto = {'tablas': tablas, 'grafico': imagen_png}
-        return render(request, 'resultados.html', contexto)
-    return render(request, 'cargar_archivo.html')
+        return render(request, 'encuestas/resultados.html', contexto)
+    return render(request, 'encuestas/cargar_archivo.html')
 
+@never_cache
 @login_required
 def descargar_zip(request):
     # Crear un archivo ZIP en memoria

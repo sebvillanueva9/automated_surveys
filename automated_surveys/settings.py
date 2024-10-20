@@ -28,6 +28,11 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv())
 
+LOGIN_URL = '/accounts/login/'
+
+LOGIN_REDIRECT_URL = '/cargar/'
+
+LOGOUT_REDIRECT_URL = 'login'
 
 # Application definition
 
