@@ -14,10 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.shortcuts import render
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+@ensure_csrf_cookie
+def serve_vue_app(request):
+    return render(request, 'index.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('encuestas.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('encuestas.urls')),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    re_path(r'^.*$', serve_vue_app),  # Esto sirve el index.html de Vue.js
 ]
+
